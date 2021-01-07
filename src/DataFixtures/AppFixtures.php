@@ -6,11 +6,17 @@ use Faker\Factory;
 use App\Entity\Article;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Symfony\Component\Validator\Constraints\DateTime;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 class AppFixtures extends Fixture
 {
     private ObjectManager $manager;
     private $faker;
+
+    public function __construct(SluggerInterface $slugger){
+        
+    }
     public function load(ObjectManager $manager)
     {
         $this->manager = $manager;
