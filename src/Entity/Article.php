@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\Table;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\ArticleRepository;
@@ -53,6 +55,28 @@ class Article
      * @ORM\Column(type="boolean")
      */
     private ?bool $isPublished;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Category::class, mappedBy="articles")
+     * @var ArrayCollection<int, Category>
+     */
+    private  $categories;
+
+    /**
+     * @ORM\OneToOne(targetEntity=Picture::class, mappedBy="article", cascade={"persist", "remove"})
+     */
+    private Picture $picture;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Author::class, inversedBy="articles")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private Author $author;
+
+    public function __construct()
+    {
+        $this->categories = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -139,6 +163,67 @@ class Article
     public function setIsPublished(bool $isPublished): self
     {
         $this->isPublished = $isPublished;
+
+        return $this;
+    }
+
+    /**
+     * @return ArrayCollection<int, Category>
+     */
+    public function getCategories(): Collection
+    {
+        return $this->categories;
+    }
+
+    public function addCategory(Category $category): self
+    {
+        if (!$this->categories->contains($category)) {
+            $this->categories[] = $category;
+            $category->addArticle($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCategory(Category $category): self
+    {
+        if ($this->categories->removeElement($category)) {
+            $category->removeArticle($this);
+        }
+
+        return $this;
+    }
+
+    public function getPicture(): ?Picture
+    {
+        return $this->picture;
+    }
+
+    public function setPicture(?Picture $picture): self
+    {
+        // unset the owning side of the relation if necessary
+        if ($picture == null && $this->picture !== null) {
+            $this->picture->setArticle(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($picture !== null && $picture->getArticle() !== $this) {
+            $picture->setArticle($this);
+        }
+
+        $this->picture = $picture;
+
+        return $this;
+    }
+
+    public function getAuthor(): ?Author
+    {
+        return $this->author;
+    }
+
+    public function setAuthor(?Author $author): self
+    {
+        $this->author = $author;
 
         return $this;
     }
