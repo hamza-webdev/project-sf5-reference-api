@@ -4,13 +4,17 @@ namespace App\DataFixtures;
 
 use Faker\Factory;
 use App\Entity\Article;
+use App\DataFixtures\AuthorFixtures;
+use App\DataFixtures\PictureFixtures;
+use App\DataFixtures\CategoryFixtures;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Symfony\Component\Validator\Constraints\DateTime;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
-class AppFixtures extends Fixture
+class ArticleFixtures extends Fixture implements DependentFixtureInterface
 {
     private ObjectManager $manager;
     private \Faker\Generator $faker;
@@ -32,8 +36,21 @@ class AppFixtures extends Fixture
     {
         $this->manager = $manager;
         $this->faker = Factory::create();
-        $this->generateArticles(5); 
+        $this->generateArticles(8); 
         $this->manager->flush();
+    }
+
+    /**
+     * @return Array<class-string>
+     */
+    public function getDependencies(): Array
+    {
+        return [
+            PictureFixtures::class, 
+            AuthorFixtures::class, 
+            CategoryFixtures::class, 
+        ];
+        
     }
 
     /**
@@ -54,15 +71,22 @@ class AppFixtures extends Fixture
             $title = $this->faker->sentence(4);
             $slug = $this->slugger->slug(\strtolower($title).'-' .$dateString );
 
+            $picture = $this->getReference("picture{$i}");
+
             $article->setTitle($title)
                     ->setContent($this->faker->paragraph())
                     ->setSlug($slug)
                     ->setCreatedAt($dateObject)
-                    ->setIsPublished(false);
+                    ->setIsPublished(false)
+                    ->setAuthor($this->getReference("author".mt_rand(1, 2)))                    
+                    ->addCategory($this->getReference("category".mt_rand(1, 3)))  
+                    ->setPicture($picture)                  
+                    ;
 
             $this->manager->persist($article);
+            $picture->setArticle($article);
         }
-    }
+    }   
 
     /**
      * Generate Date DatetimesStamp object
