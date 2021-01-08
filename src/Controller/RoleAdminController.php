@@ -23,9 +23,8 @@ class RoleAdminController extends AbstractController
     /**
      * @Route("/denied", name="app_denied")
      */
-     public function denied()
-     {
-                  
+     public function denied(): Response
+     {                 
          return $this->render('role_admin/denie.html.twig', [
              'controller_name' => 'RoleAdminController',
          ]);

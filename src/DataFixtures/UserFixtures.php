@@ -32,8 +32,7 @@ class UserFixtures extends Fixture
         for($i = 0; $i < $number; $i++)
         {
             $user = new User();
-            $user->setPassword($this->userPasswordEncoderInterface->encodePassword($user, 'badpassword'))
-                ->setEmail($this->faker->email());
+            $user->setPassword($this->userPasswordEncoderInterface->encodePassword($user, 'badpassword'))      ->setEmail($this->faker->email);
             
             $this->manager->persist($user);
             
