@@ -29,7 +29,7 @@ class DeleteAndRecreateDBWithStructureAndDataCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
         
-        $io->section("Supprussion de la base de donnees puis creation d'une nouvelle avec structure et données pré-remplies.");
+        $io->section("Suppression de la base de donnees puis creation d'une nouvelle avec structure et données pré-remplies.");
 
         $this->runSymfonyCommand($input, $output, 'doctrine:database:drop', true);
 
