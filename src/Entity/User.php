@@ -204,7 +204,7 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getAccountMustBeVerifeidBefore(): ?\DateTimeImmutable
+    public function getAccountMustBeVerifeidBefore(): \DateTimeImmutable
     {
         return $this->accountMustBeVerifeidBefore;
     }
