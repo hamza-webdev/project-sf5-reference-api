@@ -3,6 +3,14 @@
 {% block title %} S'authentifier {% endblock %}
 
 {% block body %}
+
+<main class="container text-center mt-5">
+
+<h1 class="h3 mb-3 font-weight-normal">
+M'authentifier pour acceder a mon espace
+</h1>
+{% include "_partials/_flashbag.html.twig" %}
+
 <form method="post">
     {% if error %}
         <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
