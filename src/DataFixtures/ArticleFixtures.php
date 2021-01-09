@@ -78,7 +78,7 @@ class ArticleFixtures extends Fixture implements DependentFixtureInterface
                     ->setSlug($slug)
                     ->setCreatedAt($dateObject)
                     ->setIsPublished(false)
-                    ->setAuthor($this->getReference("author".mt_rand(1, 2)))                    
+                    ->setAuthor($this->getReference("author".mt_rand(0, 1)))                    
                     ->addCategory($this->getReference("category".mt_rand(1, 3)))  
                     ->setPicture($picture)                  
                     ;

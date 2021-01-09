@@ -22,7 +22,7 @@ class AuthorFixtures extends Fixture
 
     public function generateAuthors(int $number): void
     {
-        for ($i=0; $i <= $number; $i++) { 
+        for ($i=0; $i < $number; $i++) { 
             $author = new Author();
             $author->setName($this->faker->name());
 
