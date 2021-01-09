@@ -20,8 +20,8 @@ class RegistrationFormType extends AbstractType
     /**
      * [buildForm description]
      *
-     * @param   FormBuilderInterface<array>  $builder  [$builder description]
-     * @param   Array<string>              $options  [$options description]
+     * @param   FormBuilderInterface<callable>  $builder  [$builder description]
+     * @param   Array<mixed>              $options  [$options description]
      *
      * @return  void                            [return description]
      */
